@@ -14,11 +14,6 @@ phases:
 
   pre_build:
     commands:
-      # Fetch Docker Hub credentials from AWS Secrets Manager
-      echo "Fetching Docker Hub credentials from AWS Secrets Manager..."
-      export DOCKER_HUB_USERNAME=$(aws secretsmanager get-secret-value --secret-id docker-hub-credentials --query SecretString --output text | jq -r .username)
-      export DOCKER_HUB_PASSWORD=$(aws secretsmanager get-secret-value --secret-id docker-hub-credentials --query SecretString --output text | jq -r .password)
-
       # Build the Spring Boot WAR file
       echo "Building Spring Boot WAR..."
       mvn clean package -DskipTests
@@ -30,17 +25,17 @@ phases:
       docker build -t spring-boot-app .
 
       # Tag Docker image with Docker Hub repository URI
-      docker tag spring-boot-app:latest $DOCKER_HUB_USERNAME/mywebsite:awscicd
+      docker tag spring-boot-app:latest pavanpatil2515/website:aws
 
   post_build:
     commands:
       # Login to Docker Hub using environment variables
       echo "Logging in to Docker Hub..."
-      echo "$DOCKER_HUB_PASSWORD" | docker login --username $DOCKER_HUB_USERNAME --password-stdin
+      docker login --username pavanpatil2515 --password Pavan@2515
 
       # Push Docker image to Docker Hub
       echo "Pushing Docker image to Docker Hub..."
-      docker push $DOCKER_HUB_USERNAME/mywebsite:awscicd
+      docker push pavanpatil2515/website:aws
 
 artifacts:
   files:
