@@ -6,36 +6,31 @@ phases:
       java: openjdk11
       docker: 18
     commands:
-      # Install Maven
-      echo "Installing Maven..."
-      curl -sSL https://apache.org/dist/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz | tar -xz -C /usr/local
-      export PATH=/usr/local/apache-maven-3.8.6/bin:$PATH
-      echo "Maven installed"
+      - echo "Installing Maven..."
+      - curl -sSL https://apache.org/dist/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz | tar -xz -C /usr/local
+      - export PATH=/usr/local/apache-maven-3.8.6/bin:$PATH
+      - echo "Maven installed successfully."
 
   pre_build:
     commands:
-      # Build the Spring Boot WAR file
-      echo "Building Spring Boot WAR..."
-      mvn clean package -DskipTests
+      - echo "Building Spring Boot WAR..."
+      - mvn clean package -DskipTests
 
   build:
     commands:
-      # Build Docker image using the WAR file
-      echo "Building Docker image..."
-      docker build -t spring-boot-app .
+      - echo "Building Docker image..."
+      - docker build -t spring-boot-app .
 
-      # Tag Docker image with Docker Hub repository URI
-      docker tag spring-boot-app:latest pavanpatil2515/website:aws
+      - echo "Tagging Docker image with Docker Hub repository..."
+      - docker tag spring-boot-app:latest pavanpatil2515/website:aws
 
   post_build:
     commands:
-      # Login to Docker Hub using environment variables
-      echo "Logging in to Docker Hub..."
-      docker login --username pavanpatil2515 --password Pavan@2515
+      - echo "Logging in to Docker Hub..."
+      - echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
 
-      # Push Docker image to Docker Hub
-      echo "Pushing Docker image to Docker Hub..."
-      docker push pavanpatil2515/website:aws
+      - echo "Pushing Docker image to Docker Hub..."
+      - docker push pavanpatil2515/website:aws
 
 artifacts:
   files:
