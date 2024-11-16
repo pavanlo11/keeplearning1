@@ -4,8 +4,9 @@ phases:
   install:
     runtime-versions:
       java: openjdk11
-      docker: 18
     commands:
+      - echo "Ensuring Docker is available..."
+      - if ! command -v docker &> /dev/null; then echo "Docker is not available in this environment"; exit 1; fi
       - echo "Installing Maven..."
       - curl -sSL https://apache.org/dist/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz | tar -xz -C /usr/local
       - export PATH=/usr/local/apache-maven-3.8.6/bin:$PATH
