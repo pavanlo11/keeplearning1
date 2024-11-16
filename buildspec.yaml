@@ -5,8 +5,9 @@ phases:
     runtime-versions:
       java: corretto17
     commands:
-      - echo "Ensuring Maven is installed..."
-      - curl -sSL https://apache.org/dist/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz | tar -xz -C /usr/local
+      - echo "Installing Maven..."
+      - curl -sSL https://dlcdn.apache.org/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz -o maven.tar.gz
+      - tar -xzf maven.tar.gz -C /usr/local
       - export PATH=/usr/local/apache-maven-3.8.6/bin:$PATH
       - echo "Maven installed successfully."
 
