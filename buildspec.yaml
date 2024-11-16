@@ -25,7 +25,7 @@ phases:
       docker build -t spring-boot-app .
 
       # Tag Docker image with Docker Hub repository URI
-      docker tag spring-boot-app:latest $DOCKER_HUB_USERNAME/spring-boot-app:latest
+      docker tag spring-boot-app:latest $DOCKER_HUB_USERNAME/mywebsite:awscicd
 
   post_build:
     commands:
@@ -35,7 +35,7 @@ phases:
 
       # Push Docker image to Docker Hub
       echo "Pushing Docker image to Docker Hub..."
-      docker push $DOCKER_HUB_USERNAME/spring-boot-app:latest
+      docker push $DOCKER_HUB_USERNAME/mywebsite:awscicd
 
 artifacts:
   files:
