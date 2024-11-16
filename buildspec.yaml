@@ -6,31 +6,36 @@ phases:
       java: openjdk11
       docker: 18
     commands:
-      - echo "Installing Maven..."
-      - curl -sSL https://apache.org/dist/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz | tar -xz -C /usr/local
-      - export PATH=/usr/local/apache-maven-3.8.6/bin:$PATH
-      - echo "Maven installed successfully."
+      # Install Maven
+      echo "Installing Maven..."
+      curl -sSL https://apache.org/dist/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz | tar -xz -C /usr/local
+      export PATH=/usr/local/apache-maven-3.8.6/bin:$PATH
+      echo "Maven installed"
 
   pre_build:
     commands:
-      - echo "Building Spring Boot WAR..."
-      - mvn clean package -DskipTests
+      # Build the Spring Boot WAR file
+      echo "Building Spring Boot WAR..."
+      mvn clean package -DskipTests
 
   build:
     commands:
-      - echo "Building Docker image..."
-      - docker build -t spring-boot-app .
+      # Build Docker image using the WAR file
+      echo "Building Docker image..."
+      docker build -t spring-boot-app .
 
-      - echo "Tagging Docker image with Docker Hub repository..."
-      - docker tag spring-boot-app:latest pavanpatil2515/website:aws
+      # Tag Docker image with Docker Hub repository URI
+      docker tag spring-boot-app:latest $DOCKER_HUB_USERNAME/mywebsite:cicd
 
   post_build:
     commands:
-      - echo "Logging in to Docker Hub..."
-      - echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
+      # Login to Docker Hub using environment variables
+      echo "Logging in to Docker Hub..."
+      echo "$DOCKER_HUB_PASSWORD" | docker login --username $DOCKER_HUB_USERNAME --password-stdin
 
-      - echo "Pushing Docker image to Docker Hub..."
-      - docker push pavanpatil2515/website:aws
+      # Push Docker image to Docker Hub
+      echo "Pushing Docker image to Docker Hub..."
+      docker push $DOCKER_HUB_USERNAME/mywebsite:cicd
 
 artifacts:
   files:
