@@ -14,6 +14,11 @@ phases:
 
   pre_build:
     commands:
+      # Fetch Docker Hub credentials from AWS Secrets Manager
+      echo "Fetching Docker Hub credentials from AWS Secrets Manager..."
+      export DOCKER_HUB_USERNAME=$(aws secretsmanager get-secret-value --secret-id docker-hub-credentials --query SecretString --output text | jq -r .username)
+      export DOCKER_HUB_PASSWORD=$(aws secretsmanager get-secret-value --secret-id docker-hub-credentials --query SecretString --output text | jq -r .password)
+
       # Build the Spring Boot WAR file
       echo "Building Spring Boot WAR..."
       mvn clean package -DskipTests
