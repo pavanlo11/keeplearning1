@@ -3,39 +3,31 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      java: openjdk11
-      docker: 18
+      java: corretto17
     commands:
-      # Install Maven
-      echo "Installing Maven..."
-      curl -sSL https://apache.org/dist/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz | tar -xz -C /usr/local
-      export PATH=/usr/local/apache-maven-3.8.6/bin:$PATH
-      echo "Maven installed"
+      - echo "Installing Maven..."
+      - curl -sSL https://dlcdn.apache.org/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz -o maven.tar.gz
+      - tar -xzf maven.tar.gz -C /usr/local
+      - export PATH=/usr/local/apache-maven-3.8.6/bin:$PATH
+      - echo "Maven installed successfully."
 
   pre_build:
     commands:
-      # Build the Spring Boot WAR file
-      echo "Building Spring Boot WAR..."
-      mvn clean package -DskipTests
+      - echo "Building Spring Boot WAR..."
+      - mvn clean package -DskipTests
 
   build:
     commands:
-      # Build Docker image using the WAR file
-      echo "Building Docker image..."
-      docker build -t spring-boot-app .
-
-      # Tag Docker image with Docker Hub repository URI
-      docker tag spring-boot-app:latest $DOCKER_HUB_USERNAME/mywebsite:cicd
+      - echo "Building Docker image..."
+      - docker build -t spring-boot-app .
+      - docker tag spring-boot-app:latest $DOCKER_HUB_USERNAME/mywebsite:cicd
 
   post_build:
     commands:
-      # Login to Docker Hub using environment variables
-      echo "Logging in to Docker Hub..."
-      echo "$DOCKER_HUB_PASSWORD" | docker login --username $DOCKER_HUB_USERNAME --password-stdin
-
-      # Push Docker image to Docker Hub
-      echo "Pushing Docker image to Docker Hub..."
-      docker push $DOCKER_HUB_USERNAME/mywebsite:cicd
+      - echo "Logging in to Docker Hub..."
+      - echo "$DOCKER_HUB_PASSWORD" | docker login --username $DOCKER_HUB_USERNAME --password-stdin
+      - echo "Pushing Docker image to Docker Hub..."
+      - docker push $DOCKER_HUB_USERNAME/mywebsite:cicd
 
 artifacts:
   files:
