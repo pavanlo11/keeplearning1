@@ -8,7 +8,7 @@ phases:
     - echo "Installing Maven..."
     - curl -sSL https://dlcdn.apache.org/maven/maven-3/3.9.4/binaries/apache-maven-3.9.4-bin.tar.gz -o apache-maven-3.9.4-bin.tar.gz
     - echo "Checking the downloaded file..."
-    - ls -lh maven.tar.gz
+    - ls -lh apache-maven-3.9.4-bin.tar.gz
     - file maven.tar.gz
     - echo "Creating extraction directory..."
     - mkdir -p $HOME/maven
