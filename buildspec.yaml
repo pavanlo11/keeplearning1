@@ -2,15 +2,15 @@ version: 0.2
 
 phases:
   install:
-  runtime-versions:
-    java: corretto17
-  commands:
-    - echo "Installing Maven..."
-    - curl -sSL https://dlcdn.apache.org/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz -o maven.tar.gz
-    - mkdir -p $HOME/maven
-    - tar -xzf maven.tar.gz -C $HOME/maven
-    - export PATH=$HOME/maven/apache-maven-3.8.6/bin:$PATH
-    - echo "Maven installed successfully."
+    runtime-versions:
+      java: corretto17
+    commands:
+      - echo "Installing Maven..."
+      - curl -sSL https://dlcdn.apache.org/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz -o maven.tar.gz
+      - mkdir -p $HOME/maven
+      - tar -xzf maven.tar.gz -C $HOME/maven
+      - export PATH=$HOME/maven/apache-maven-3.8.6/bin:$PATH
+      - echo "Maven installed successfully."
 
   pre_build:
     commands:
