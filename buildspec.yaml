@@ -7,21 +7,11 @@ phases:
   commands:
     - echo "Installing Maven..."
     - curl -sSL https://dlcdn.apache.org/maven/maven-3/3.9.4/binaries/apache-maven-3.9.4-bin.tar.gz -o apache-maven-3.9.4-bin.tar.gz
-    - echo "Checking the downloaded file..."
-    - ls -lh apache-maven-3.9.4-bin.tar.gz
-    - file maven.tar.gz
-    - echo "Creating extraction directory..."
-    - mkdir -p $HOME/maven
-    - ls -ld $HOME/maven
-    - echo "Extracting Maven..."
-    - tar -xzf apache-maven-3.9.4-bin.tar.gz -C $HOME/maven || echo "Extraction failed." && exit 1
-    - export PATH=$HOME/maven/apache-maven-3.8.6/bin:$PATH
-    - echo "Maven installed successfully."
-
+    
   pre_build:
     commands:
       - echo "Building Spring Boot WAR..."
-      - mvn clean package -DskipTests
+      - mvn package -DskipTests
 
   build:
     commands:
