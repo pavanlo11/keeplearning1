@@ -5,8 +5,8 @@ on:
 
 jobs:
   docker:
-    runs-on: ubuntu-latest
-    labels: pavan
+    runs-on: 
+       labels: pavan
     steps:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
